@@ -1,0 +1,216 @@
+[
+  {
+    "bg": "00075",
+    "bgm": "0002",
+    "textFrame": "off",
+    "waitTime": 2500,
+    "waitType": "time"
+  },
+  {
+    "bg": "00224",
+    "bgEffect": "fade",
+    "bgm": "fade_out",
+    "textFrame": "off",
+    "waitTime": 2500,
+    "waitType": "time"
+  },
+  {
+    "bgm": "0082",
+    "speaker": "にちか",
+    "text": "あー……もう────\r\n終わらない……",
+    "textCtrl": "p",
+    "textFrame": "001",
+    "voice": "produce_events/202401201/2024012010010"
+  },
+  {
+    "se": "1218",
+    "textFrame": "off",
+    "waitTime": 3800,
+    "waitType": "time"
+  },
+  {
+    "textFrame": "off",
+    "waitTime": 500,
+    "waitType": "time"
+  },
+  {
+    "speaker": "にちか",
+    "text": "めんどくさいなー",
+    "textCtrl": "p",
+    "textFrame": "001",
+    "voice": "produce_events/202401201/2024012010020"
+  },
+  {
+    "speaker": "にちか",
+    "text": "全然、必要ないし\r\nこういう前ならえな感じとか……ほんと────",
+    "textCtrl": "p",
+    "textFrame": "001",
+    "voice": "produce_events/202401201/2024012010030"
+  },
+  {
+    "bg": "00001",
+    "bgEffect": "fade",
+    "bgEffectTime": 1000,
+    "textFrame": "off",
+    "waitTime": 1500,
+    "waitType": "time"
+  },
+  {
+    "charAnim1": "wait4",
+    "charAnim2": "face_close2",
+    "charCategory": "stand_fix",
+    "charEffect": {
+      "alpha": 0,
+      "time": 100,
+      "type": "from"
+    },
+    "charId": "024",
+    "charLabel": "nichika",
+    "charLipAnim": "lip_surp",
+    "charPosition": {
+      "order": 0,
+      "x": 568,
+      "y": 640
+    },
+    "charType": "characters",
+    "speaker": "にちか",
+    "text": "はーあ……────",
+    "textCtrl": "p",
+    "textFrame": "001",
+    "voice": "produce_events/202401201/2024012010040"
+  },
+  {
+    "charAnim1": "shy2",
+    "charAnim2": "face_close3",
+    "charLabel": "nichika",
+    "charLipAnim": "lip_surp",
+    "speaker": "にちか",
+    "text": "はーあ……────",
+    "textCtrl": "p",
+    "textFrame": "001",
+    "voice": "produce_events/202401201/2024012010050"
+  },
+  {
+    "speaker": "プロデューサー",
+    "text": "…………",
+    "textCtrl": "p",
+    "textFrame": "002"
+  },
+  {
+    "charAnim1": "anger2",
+    "charAnim2": "face_anger2",
+    "charLabel": "nichika",
+    "charLipAnim": "lip_surp",
+    "speaker": "にちか",
+    "text": "数学も古文も歴史もやって意味あるんですかねー\r\n全部、必要ないのになー",
+    "textCtrl": "p",
+    "textFrame": "001",
+    "voice": "produce_events/202401201/2024012010060"
+  },
+  {
+    "speaker": "プロデューサー",
+    "text": "にちか、手が止まってるぞ",
+    "textCtrl": "p",
+    "textFrame": "002"
+  },
+  {
+    "speaker": "にちか",
+    "text": "そういうこと言われると\r\nもっとやる気なくなるのわからないですかねー",
+    "textCtrl": "p",
+    "textFrame": "001",
+    "voice": "produce_events/202401201/2024012010070"
+  },
+  {
+    "speaker": "プロデューサー",
+    "text": "でも、始めないと終わらないだろ",
+    "textCtrl": "p",
+    "textFrame": "002"
+  },
+  {
+    "charAnim1": "sad2",
+    "charAnim2": "face_close2",
+    "charAnim4": "eye_right",
+    "charLabel": "nichika",
+    "charLipAnim": "lip_surp_s",
+    "speaker": "にちか",
+    "text": "…………",
+    "textCtrl": "p",
+    "textFrame": "001",
+    "voice": "produce_events/202401201/2024012010080"
+  },
+  {
+    "charAnim1": "wait2",
+    "charAnim2": "face_anger2",
+    "charLabel": "nichika",
+    "charLipAnim": "lip_surp",
+    "speaker": "にちか",
+    "text": "はいはい、わかってますー",
+    "textCtrl": "p",
+    "textFrame": "001",
+    "voice": "produce_events/202401201/2024012010090"
+  },
+  {
+    "charAnim1": "blank",
+    "charAnim2": "face_serious",
+    "charLabel": "nichika",
+    "charLipAnim": "lip_surp",
+    "speaker": "にちか",
+    "text": "あの、使ってないなら会議室でやってもいいです？\r\nここだと集中できないので",
+    "textCtrl": "p",
+    "textFrame": "001",
+    "voice": "produce_events/202401201/2024012010100"
+  },
+  {
+    "speaker": "プロデューサー",
+    "text": "ああ、今は空いてるから\r\n構わないぞ",
+    "textCtrl": "p",
+    "textFrame": "002"
+  },
+  {
+    "bg": "00224",
+    "bgEffect": "fade",
+    "bgEffectTime": 500,
+    "charAnim1": "wait",
+    "charAnim2": "face_close2",
+    "charEffect": {
+      "alpha": 0,
+      "time": 100,
+      "type": "to"
+    },
+    "charLabel": "nichika",
+    "se": "0454",
+    "textFrame": "off",
+    "waitTime": 1000,
+    "waitType": "time"
+  },
+  {
+    "speaker": "にちか",
+    "text": "それじゃ、お借りしますねー",
+    "textCtrl": "p",
+    "textFrame": "001",
+    "voice": "produce_events/202401201/2024012010110"
+  },
+  {
+    "bg": "00000",
+    "bgEffect": "fade",
+    "bgEffectTime": 1000,
+    "bgm": "fade_out",
+    "se": "0242",
+    "textFrame": "off",
+    "waitTime": 1000,
+    "waitType": "time"
+  },
+  {
+    "bg": "00623",
+    "bgEffect": "fade",
+    "bgEffectTime": 1000,
+    "bgm": "0000",
+    "textFrame": "off",
+    "waitTime": 1500,
+    "waitType": "time"
+  },
+  {
+    "label": "end",
+    "textFrame": "off"
+  }
+]
