@@ -2,35 +2,41 @@ from lib import func_gen
 
 func_list = func_gen.func_list
 
-char_frame = {}
+# Module-level character frame cache for tracking speaker text frames
+_char_frame = {}
+
+def reset_char_frames():
+    """Reset the character frame cache. Useful for testing or processing multiple files."""
+    global _char_frame
+    _char_frame = {}
 
 def parse(tokens: list):
+    """Parse a statement (function call or dialogue line)."""
     token_type, token_value = tokens.pop(0)
     statement = {}
     message = None
 
-    # print(token_type,tokens[0][0])
     if token_type == 'AT':
-        statement, message  = parse_func(tokens)
-    elif token_type == 'PATH' and tokens[0][0] == 'STRING':
+        statement, message = parse_func(tokens)
+    elif token_type == 'PATH' and len(tokens) > 0 and tokens[0][0] == 'STRING':
         statement['speaker'] = token_value
-        statement['text'] = tokens[0][1].replace('\\r','\r').replace('\\n','\n')
+        statement['text'] = tokens[0][1].replace('\\r', '\r').replace('\\n', '\n')
         statement['textCtrl'] = 'p'
         statement['textFrame'] = '001'
 
-        #check frame presets
+        # Check frame presets
         tokens.pop(0)
         if len(tokens) == 0:
-            if statement['speaker'] in char_frame:
-                statement['textFrame'] = char_frame[statement['speaker']]
-        elif len(tokens) > 0 and tokens[0][0] == 'NUMBER':
+            # Use previously stored frame for this speaker if available
+            if statement['speaker'] in _char_frame:
+                statement['textFrame'] = _char_frame[statement['speaker']]
+        elif tokens[0][0] == 'NUMBER':
             statement['textFrame'] = str(tokens[0][1])
-            char_frame[statement['speaker']]= statement['textFrame']
+            _char_frame[statement['speaker']] = statement['textFrame']
         else:
-            message = f"invalid statement"
-
+            message = "invalid statement"
     else:
-        message = f"invalid statement"
+        message = "invalid statement"
     
     return statement, message
 
@@ -45,27 +51,35 @@ def parse_func(tokens):
     message = None
 
     while token_type:
+        if not tokens:
+            break
+            
         token_type, token_value = tokens.pop(0)
         expect = func_list[func_name]['rule']
 
-        if token_type in expect[count]:
-            statement[func_list[func_name]['label'][count]] = token_value
-        else:
-            exp_mess = expect[count]
-            if type(expect[count]) is list:
+        # Handle both list (alternatives) and string (single option) rules
+        if isinstance(expect[count], list):
+            if token_type in expect[count]:
+                statement[func_list[func_name]['label'][count]] = token_value
+            else:
                 exp_mess = ' or '.join(expect[count])
-            message = f"expected {exp_mess}, got {token_type}"
+                message = f"expected {exp_mess}, got {token_type}"
+                token_type = None
+        else:
+            if token_type == expect[count]:
+                statement[func_list[func_name]['label'][count]] = token_value
+            else:
+                message = f"expected {expect[count]}, got {token_type}"
+                token_type = None
 
-            token_type = None
-
-        count +=1
+        count += 1
         # stop if read all expected
         if count >= len(expect) or len(tokens) == 0:
             token_type = None
 
     
     if 'ph' in statement:
-        if statement['ph'] not in [')',']']:
+        if statement['ph'] not in [')', ']']:
             message = 'require end of arguments'
         statement.pop('ph')
 
@@ -90,9 +104,11 @@ def parse_func(tokens):
         statement['waitType'] = 'time'
         statement['waitTime'] = int(statement['waitTime'])
     elif func_name == 'voice':
-        # remove / at the beginning
-        split_path = list(filter(None,statement['voice'].split('/')))
-        statement['voice'] = '/'.join(split_path)
+        # Normalize voice path - remove leading/trailing slashes
+        voice_path = statement['voice']
+        if voice_path.startswith('/'):
+            voice_path = voice_path.lstrip('/')
+        statement['voice'] = voice_path
 
     return statement, message
 

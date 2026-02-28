@@ -1,3 +1,43 @@
+// Rewritten with the new SCWriting grammar
+
+#event 202401201
+
+#stage default
+  left: 310,640,1
+  center: 568,640,0
+  right: 796,640,2
+
+#positions
+  nichika: center
+
+#character nichika
+  pos: center
+  type: characters
+  id: 024
+  category: stand_fix
+  textframe: 001
+  alias: にちか
+  default_anim: [idle]
+
+#character producer
+  textframe: 002
+  alias: プロデューサー
+
+#anim idle
+  main: wait1
+  face: face_wait
+  lip: lip_wait
+
+#anim tired
+  main: wait4
+  face: face_close2
+  lip: lip_surp
+
+#anim upset
+  main: anger2
+  face: face_anger2
+  lip: lip_surp
+
 @bg 00075
 @bgm 0002
 @wait 2500
@@ -7,74 +47,75 @@
 @wait 2500
 
 @bgm 0082
-@voice /produce_events/202401201/2024012010010
-にちか "あー……もう────\r\n終わらない……"
+@voice auto
+にちか """
+  あー……もう————
+  終わらない……
+"""
 
 @se 1218
 @wait 3800
-
 @wait 500
 
-@voice /produce_events/202401201/2024012010020
+@voice 2024012010020
 にちか "めんどくさいなー"
 
-@voice /produce_events/202401201/2024012010030
-にちか "全然、必要ないし\r\nこういう前ならえな感じとか……ほんと────"
+にちか """
+  全然、必要ないし
+  こういう前ならえな感じとか……ほんと————
+""" 001 @voice 2024012010030
 
 @bg 00001 fade 1000
 @wait 1500
 
-@show nichika (568,640,0) [wait4, face_close2, lip_surp]
-// @cos is required to show the character in the viewer for the first time
-// although grammarly allowed in SCWriting
-@cos nichika characters 024 stand_fix
-@voice /produce_events/202401201/2024012010040
-にちか "はーあ……────" 001
+にちか [tired] "はーあ……————" @voice auto
 
-@char nichika [shy2, face_close3, lip_surp]
-@voice /produce_events/202401201/2024012010050
-にちか "はーあ……────"
+@speaker producer
+"…………"
 
-プロデューサー "…………" 002
+@speaker にちか
+[upset] """
+  数学も古文も歴史もやって意味あるんですかねー
+  全部、必要ないのになー
+""" 001 @voice auto
 
-@char nichika [anger2, face_anger2, lip_surp]
-@voice /produce_events/202401201/2024012010060"
-にちか "数学も古文も歴史もやって意味あるんですかねー\r\n全部、必要ないのになー"
+@speaker producer
+"にちか、手が止まってるぞ"
 
-プロデューサー "にちか、手が止まってるぞ"
+@speaker にちか
+"""
+  そういうこと言われると
+  もっとやる気なくなるのわからないですかねー
+""" 001 @voice auto
 
+@speaker producer
+"でも、始めないと終わらないだろ"
 
-@voice /produce_events/202401201/2024012010070"
-にちか "そういうこと言われると\r\nもっとやる気なくなるのわからないですかねー"
+@speaker にちか
+[sad2, face_close2, lip_surp_s, eye_right] "…………" @voice auto
+[wait2, face_anger2, lip_surp] "はいはい、わかってますー" @voice auto
+[wait3, face_serious, lip_surp, blank] """
+  あの、使ってないなら会議室でやってもいいです？
+  ここだと集中できないので
+""" 001 @voice auto
 
-プロデューサー "でも、始めないと終わらないだろ"
-
-@char nichika [sad2, face_close2, lip_surp_s, eye_right]
-@voice /produce_events/202401201/2024012010080"
-にちか "…………"
-
-@char nichika [wait2, face_anger2, lip_surp]
-@voice /produce_events/202401201/2024012010090
-にちか "はいはい、わかってますー"
-
-@char nichika [wait3, face_serious, lip_surp, blank]
-@voice /produce_events/202401201/2024012010100
-にちか "あの、使ってないなら会議室でやってもいいです？\r\nここだと集中できないので"
-
-プロデューサー "ああ、今は空いてるから\r\n構わないぞ"
+@speaker producer
+"""
+  ああ、今は空いてるから
+  構わないぞ
+"""
 
 @hide nichika [wait, face_close2]
-
 @bg 00224 fade 500
 @se 0454
 @wait 1000
 
-@voice /produce_events/202401201/2024012010110
-にちか "それじゃ、お借りしますねー"
+@speaker にちか
+"それじゃ、お借りしますねー" @voice auto
 
 @bg 00000 fade 1000
 @bgm fade_out
-@se 0242c
+@se 0242
 @wait 1000
 
 @bg 00623 fade 1000
