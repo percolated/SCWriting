@@ -21,6 +21,7 @@ class Sc:
         self.current_speaker = None
         self.speaker_frames = {}
         self.active_chars = set()
+        self.runtime_char_state = {}
 
     def raise_error(self, message):
         raise SyntaxError(f'Line {self.line_nr}, {message}')
@@ -141,8 +142,15 @@ class Sc:
                     or 'nextLabel' in next_item
                     or 'select' in next_item
                 )
+                # Keep character visibility/effect transitions as standalone tracks.
+                # Otherwise sequences like @hide -> @cos may merge and carry fade-out
+                # effect onto the new costume entry.
+                has_char_effect_break = (
+                    'charEffect' in current
+                    or 'charEffect' in next_item
+                )
 
-                if not has_wait and not has_text_break and not has_flow_break:
+                if not has_wait and not has_text_break and not has_flow_break and not has_char_effect_break:
                     # Merge with next item
                     merged = {**current, **next_item}
                     clean_arr.append(merged)
@@ -164,8 +172,18 @@ class Sc:
         if not char_label:
             return
 
+        runtime = self.runtime_char_state.setdefault(char_label, {})
+        if 'charType' in statement:
+            runtime['charType'] = statement.get('charType')
+        if 'charId' in statement:
+            runtime['charId'] = statement.get('charId')
+        if 'charCategory' in statement:
+            runtime['charCategory'] = statement.get('charCategory')
         if 'charPosition' in statement:
+            runtime['charPosition'] = dict(statement.get('charPosition'))
             self.active_chars.add(char_label)
+        if 'charScale' in statement:
+            runtime['charScale'] = statement.get('charScale')
 
         effect = statement.get('charEffect')
         if isinstance(effect, dict):
@@ -601,7 +619,7 @@ class Sc:
         return statement
 
     def _split_inline_voice(self, line):
-        match = re.search(r'\s+@voice\s+(\S+)\s*$', line)
+        match = re.search(r'(?:^|\s+)@voice\s+(\S+)\s*$', line)
         if match:
             return line[:match.start()].rstrip(), match.group(1)
         return line, None
@@ -640,6 +658,7 @@ class Sc:
         # speaker [anim] "text" 001
         match = re.match(r'^(.+?)\s+\[([^\]]+)\]\s+"([^"]*)"\s*(\d+)?\s*$', line)
         if match:
+            self.current_speaker = match.group(1).strip()
             return self._build_dialogue_statement(
                 match.group(1).strip(),
                 match.group(3),
@@ -651,6 +670,7 @@ class Sc:
         # speaker "text" 001
         match = re.match(r'^(.+?)\s+"([^"]*)"\s*(\d+)?\s*$', line)
         if match:
+            self.current_speaker = match.group(1).strip()
             return self._build_dialogue_statement(
                 match.group(1).strip(),
                 match.group(2),
@@ -690,10 +710,13 @@ class Sc:
                 # speaker [anim] """
                 match = re.match(r'^(.+?)\s+\[([^\]]+)\]$', head)
                 if match:
+                    self.current_speaker = match.group(1).strip()
                     speaker = match.group(1).strip()
                     anim_expr = match.group(2)
                 else:
                     # speaker """
+                    if head:
+                        self.current_speaker = head
                     speaker = head if head else self.current_speaker
 
         if speaker is None:
@@ -759,7 +782,10 @@ class Sc:
         # @bg <name> [effect] [time]
         match = re.match(r'^@bg\s+(\S+)(?:\s+(\S+))?(?:\s+(\d+))?\s*$', line)
         if match:
-            statement = {'bg': match.group(1)}
+            bg_name = match.group(1)
+            if bg_name.lower() == 'none':
+                bg_name = 'off'
+            statement = {'bg': bg_name}
             if match.group(2):
                 statement['bgEffect'] = match.group(2)
             if match.group(3):
@@ -769,7 +795,10 @@ class Sc:
         # @fg <name> [effect] [time]
         match = re.match(r'^@fg\s+(\S+)(?:\s+(\S+))?(?:\s+(\d+))?\s*$', line)
         if match:
-            statement = {'fg': match.group(1)}
+            fg_name = match.group(1)
+            if fg_name.lower() == 'none':
+                fg_name = 'off'
+            statement = {'fg': fg_name}
             if match.group(2):
                 statement['fgEffect'] = match.group(2)
             if match.group(3):
@@ -805,18 +834,38 @@ class Sc:
             self.pending_voice_override = resolved_voice
             return None, True
 
-        # @hide char [optional anims]
-        match = re.match(r'^@hide\s+(\S+)(?:\s+\[([^\]]+)\])?\s*$', line)
-        if match and '[' not in line.split(match.group(1), 1)[0]:
-            char_name = match.group(1)
-            anim_expr = match.group(2)
-            statement = {
-                'charLabel': char_name,
-                'charEffect': {'type': 'to', 'alpha': 0, 'time': 100},
-            }
-            if anim_expr:
-                statement.update(self._parse_anim_expr(anim_expr))
-            return statement, True
+        # @hide char [optional anims] [optional fade_ms]
+        # Also supports @hide char <fade_ms> [anims]
+        if line.startswith('@hide '):
+            rest = line[len('@hide '):].strip()
+            fade_ms = 100
+            anim_expr = None
+
+            time_match = re.search(r'\s+(\d+)\s*$', rest)
+            if time_match:
+                fade_ms = int(time_match.group(1))
+                rest = rest[:time_match.start()].strip()
+
+            anim_match = re.search(r'\[([^\]]+)\]\s*$', rest)
+            if anim_match:
+                anim_expr = anim_match.group(1)
+                rest = rest[:anim_match.start()].strip()
+
+            time_match = re.search(r'\s+(\d+)\s*$', rest)
+            if time_match:
+                fade_ms = int(time_match.group(1))
+                rest = rest[:time_match.start()].strip()
+
+            parts = [x for x in rest.split() if x]
+            if len(parts) == 1:
+                char_name = parts[0]
+                statement = {
+                    'charLabel': char_name,
+                    'charEffect': {'type': 'to', 'alpha': 0, 'time': fade_ms},
+                }
+                if anim_expr:
+                    statement.update(self._parse_anim_expr(anim_expr))
+                return statement, True
 
         # @char char [preset or anim list]
         match = re.match(r'^@char\s+(\S+)\s+\[([^\]]+)\]\s*$', line)
@@ -828,23 +877,51 @@ class Sc:
         # @cos <char> <type> <id> [category]
         match = re.match(r'^@cos\s+(\S+)\s+(\S+)\s+(\S+)(?:\s+(\S+))?\s*$', line)
         if match:
+            char_name = match.group(1)
             statement = {
-                'charLabel': match.group(1),
+                'charLabel': char_name,
                 'charType': match.group(2),
                 'charId': match.group(3),
             }
             if match.group(4):
                 statement['charCategory'] = match.group(4)
+
+            # Keep costume switches compatible with old EventViewer by
+            # emitting current/default position when @cos omits it.
+            runtime = self.runtime_char_state.get(char_name, {})
+            runtime_position = runtime.get('charPosition')
+            if runtime_position is not None:
+                statement['charPosition'] = dict(runtime_position)
+            else:
+                fallback_position = self._resolve_position(char_name, None)
+                if fallback_position is not None:
+                    statement['charPosition'] = dict(fallback_position)
+            if 'charScale' in runtime:
+                statement['charScale'] = runtime['charScale']
+
             return statement, True
 
-        # @show char [position] [anims]
+        # @show char [position] [anims] [optional fade_ms]
+        # Also supports @show char [position] <fade_ms> [anims]
         if line.startswith('@show '):
             rest = line[len('@show '):].strip()
             anim_expr = None
+            fade_ms = 100
+
+            time_match = re.search(r'\s+(\d+)\s*$', rest)
+            if time_match:
+                fade_ms = int(time_match.group(1))
+                rest = rest[:time_match.start()].strip()
+
             anim_match = re.search(r'\[([^\]]+)\]\s*$', rest)
             if anim_match:
                 anim_expr = anim_match.group(1)
                 rest = rest[:anim_match.start()].strip()
+
+            time_match = re.search(r'\s+(\d+)\s*$', rest)
+            if time_match:
+                fade_ms = int(time_match.group(1))
+                rest = rest[:time_match.start()].strip()
 
             pos_tuple = None
             pos_match = re.search(r'\(([^)]*)\)\s*$', rest)
@@ -869,7 +946,7 @@ class Sc:
                 statement = {
                     'charLabel': char_name,
                     'charPosition': position,
-                    'charEffect': {'type': 'from', 'alpha': 0, 'time': 100},
+                    'charEffect': {'type': 'from', 'alpha': 0, 'time': fade_ms},
                 }
 
                 if anim_expr:

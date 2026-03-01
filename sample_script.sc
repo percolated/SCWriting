@@ -22,6 +22,7 @@
 #character producer
   textframe: 002
   alias: プロデューサー
+  voice: skip
 
 #anim idle
   main: wait1
@@ -48,7 +49,7 @@
 
 @bgm 0082
 @voice auto
-にちか """
+nichika """
   あー……もう————
   終わらない……
 """
@@ -57,18 +58,16 @@
 @wait 3800
 @wait 500
 
-@voice 2024012010020
 にちか "めんどくさいなー"
-
-にちか """
+"""
   全然、必要ないし
   こういう前ならえな感じとか……ほんと————
-""" 001 @voice 2024012010030
+"""
 
 @bg 00001 fade 1000
 @wait 1500
 
-にちか [tired] "はーあ……————" @voice auto
+にちか [tired] "はーあ……————"
 
 @speaker producer
 "…………"
@@ -77,7 +76,7 @@
 [upset] """
   数学も古文も歴史もやって意味あるんですかねー
   全部、必要ないのになー
-""" 001 @voice auto
+""" 001
 
 @speaker producer
 "にちか、手が止まってるぞ"
@@ -86,18 +85,18 @@
 """
   そういうこと言われると
   もっとやる気なくなるのわからないですかねー
-""" 001 @voice auto
+"""
 
 @speaker producer
 "でも、始めないと終わらないだろ"
 
 @speaker にちか
-[sad2, face_close2, lip_surp_s, eye_right] "…………" @voice auto
-[wait2, face_anger2, lip_surp] "はいはい、わかってますー" @voice auto
+[sad2, face_close2, lip_surp_s, eye_right] "…………"
+[wait2, face_anger2, lip_surp] "はいはい、わかってますー"
 [wait3, face_serious, lip_surp, blank] """
   あの、使ってないなら会議室でやってもいいです？
   ここだと集中できないので
-""" 001 @voice auto
+"""
 
 @speaker producer
 """
@@ -111,7 +110,7 @@
 @wait 1000
 
 @speaker にちか
-"それじゃ、お借りしますねー" @voice auto
+"それじゃ、お借りしますねー"
 
 @bg 00000 fade 1000
 @bgm fade_out

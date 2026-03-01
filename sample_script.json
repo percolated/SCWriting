@@ -77,42 +77,48 @@
     "voice": "produce_events/202401201/2024012010040"
   },
   {
+    "id": 2024012010050,
     "speaker": "プロデューサー",
     "text": "…………",
     "textCtrl": "p",
-    "textFrame": "002"
+    "textFrame": "002",
+    "voice": "produce_events/202401201/2024012010050"
   },
   {
     "charAnim1": "anger2",
     "charAnim2": "face_anger2",
     "charLabel": "nichika",
     "charLipAnim": "lip_surp",
-    "id": 2024012010050,
-    "speaker": "にちか",
-    "text": "数学も古文も歴史もやって意味あるんですかねー\r\n全部、必要ないのになー",
-    "textCtrl": "p",
-    "textFrame": "001",
-    "voice": "produce_events/202401201/2024012010050"
-  },
-  {
-    "speaker": "プロデューサー",
-    "text": "にちか、手が止まってるぞ",
-    "textCtrl": "p",
-    "textFrame": "002"
-  },
-  {
     "id": 2024012010060,
     "speaker": "にちか",
-    "text": "そういうこと言われると\r\nもっとやる気なくなるのわからないですかねー",
+    "text": "数学も古文も歴史もやって意味あるんですかねー\r\n全部、必要ないのになー",
     "textCtrl": "p",
     "textFrame": "001",
     "voice": "produce_events/202401201/2024012010060"
   },
   {
+    "id": 2024012010070,
+    "speaker": "プロデューサー",
+    "text": "にちか、手が止まってるぞ",
+    "textCtrl": "p",
+    "textFrame": "002",
+    "voice": "produce_events/202401201/2024012010070"
+  },
+  {
+    "id": 2024012010080,
+    "speaker": "にちか",
+    "text": "そういうこと言われると\r\nもっとやる気なくなるのわからないですかねー",
+    "textCtrl": "p",
+    "textFrame": "001",
+    "voice": "produce_events/202401201/2024012010080"
+  },
+  {
+    "id": 2024012010090,
     "speaker": "プロデューサー",
     "text": "でも、始めないと終わらないだろ",
     "textCtrl": "p",
-    "textFrame": "002"
+    "textFrame": "002",
+    "voice": "produce_events/202401201/2024012010090"
   },
   {
     "charAnim1": "sad2",
@@ -120,47 +126,46 @@
     "charAnim4": "eye_right",
     "charLabel": "nichika",
     "charLipAnim": "lip_surp_s",
-    "id": 2024012010070,
+    "id": 2024012010100,
     "speaker": "にちか",
     "text": "…………",
     "textCtrl": "p",
     "textFrame": "001",
-    "voice": "produce_events/202401201/2024012010070"
+    "voice": "produce_events/202401201/2024012010100"
   },
   {
     "charAnim1": "wait2",
     "charAnim2": "face_anger2",
     "charLabel": "nichika",
     "charLipAnim": "lip_surp",
-    "id": 2024012010080,
+    "id": 2024012010110,
     "speaker": "にちか",
     "text": "はいはい、わかってますー",
     "textCtrl": "p",
     "textFrame": "001",
-    "voice": "produce_events/202401201/2024012010080"
+    "voice": "produce_events/202401201/2024012010110"
   },
   {
     "charAnim1": "blank",
     "charAnim2": "face_serious",
     "charLabel": "nichika",
     "charLipAnim": "lip_surp",
-    "id": 2024012010090,
+    "id": 2024012010120,
     "speaker": "にちか",
     "text": "あの、使ってないなら会議室でやってもいいです？\r\nここだと集中できないので",
     "textCtrl": "p",
     "textFrame": "001",
-    "voice": "produce_events/202401201/2024012010090"
+    "voice": "produce_events/202401201/2024012010120"
   },
   {
+    "id": 2024012010130,
     "speaker": "プロデューサー",
     "text": "ああ、今は空いてるから\r\n構わないぞ",
     "textCtrl": "p",
-    "textFrame": "002"
+    "textFrame": "002",
+    "voice": "produce_events/202401201/2024012010130"
   },
   {
-    "bg": "00224",
-    "bgEffect": "fade",
-    "bgEffectTime": 500,
     "charAnim1": "wait",
     "charAnim2": "face_close2",
     "charEffect": {
@@ -172,18 +177,24 @@
     "textFrame": "off"
   },
   {
+    "bg": "00224",
+    "bgEffect": "fade",
+    "bgEffectTime": 500,
     "se": "0454",
+    "textFrame": "off"
+  },
+  {
     "textFrame": "off",
     "waitTime": 1000,
     "waitType": "time"
   },
   {
-    "id": 2024012010100,
+    "id": 2024012010140,
     "speaker": "にちか",
     "text": "それじゃ、お借りしますねー",
     "textCtrl": "p",
     "textFrame": "001",
-    "voice": "produce_events/202401201/2024012010100"
+    "voice": "produce_events/202401201/2024012010140"
   },
   {
     "bg": "00000",
